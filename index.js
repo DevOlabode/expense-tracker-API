@@ -31,7 +31,7 @@ passport.deserializeUser(User.deserializeUser());
 
 
 
-const dbUrl = process.env.DB_URL || 'mongodb://localhost:27017/auth';
+const dbUrl = process.env.DB_URL || 'mongodb://localhost:27017/expenseTracker';
 
 mongoose.connect(dbUrl);
 
@@ -42,6 +42,10 @@ db.once('open', () =>{
 });
 
 app.use('/', authRoutes);
+
+app.get('/', (req, res)=>{
+  res.json({msg : 'The Homepage'})
+});
 
 app.use((err, req, res, next) => {
   const { statusCode = 500, message = "Internal Server Error" } = err;

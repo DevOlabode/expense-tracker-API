@@ -24,6 +24,10 @@ router.post('/login', (req, res, next) => {
         return res.status(401).json({ msg: info.message || 'Login failed' });
     }
 
+    if(req.user){
+        return res.status(401).json({msg : "Already Logged In"})
+    }
+
     req.logIn(user, (err) => {
         if (err) {
             return next(err)
@@ -35,7 +39,7 @@ router.post('/login', (req, res, next) => {
 
 const isLoggedIn = function(req, res, next){
     if(!req.isAuthenticated()){
-        res.status(401).json({msg : 'You must be logged in!'})
+        return res.status(401).json({msg : 'You must be logged in!'})
     }
     next();
 };
@@ -53,6 +57,12 @@ router.get('/profile', isLoggedIn, catchAsync(async(req, res)=>{
     const user = await User.findById(req.user._id);
     if(!user) throw new ExpressError('User not found', 404);
     res.status(200).json(user)
-}))
+}));
+
+router.delete('/delete', isLoggedIn, catchAsync(async(req, res)=>{
+    const user = await User.findByIdAndDelete(req.user._id);
+    if(!user) throw new ExpressError('User not found', 404);
+    res.status(200).json({msg : 'Account Deleted Successfully'})
+}));
 
 module.exports = router;
