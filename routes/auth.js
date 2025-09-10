@@ -7,6 +7,8 @@ const User = require('../models/user');
 const ExpressError  = require('../utils/expressError');
 const catchAsync  = require('../utils/catchAsync');
 
+const { isLoggedIn } = require('../middleware');
+
 router.post('/register', catchAsync(async(req, res)=>{
     const {username, email, password} = req.body;
     const user = await User.register(new User({ username, email }), password);
@@ -36,13 +38,6 @@ router.post('/login', (req, res, next) => {
         });
     })(req, res, next);
 });
-
-const isLoggedIn = function(req, res, next){
-    if(!req.isAuthenticated()){
-        return res.status(401).json({msg : 'You must be logged in!'})
-    }
-    next();
-};
 
 router.post('/logout',isLoggedIn, catchAsync(async(req, res)=>{
     req.logout(function(err){

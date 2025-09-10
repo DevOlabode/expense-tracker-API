@@ -6,7 +6,9 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local');
 
 const authRoutes = require('./routes/auth');
-const User = require('./models/user')
+const expenseRoutes = require('./routes/expense')
+
+const User = require('./models/user');
 
 dotenv.config();
 
@@ -28,9 +30,6 @@ passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-
-
-
 const dbUrl = process.env.DB_URL || 'mongodb://localhost:27017/expenseTracker';
 
 mongoose.connect(dbUrl);
@@ -42,6 +41,7 @@ db.once('open', () =>{
 });
 
 app.use('/', authRoutes);
+app.use('/expense', expenseRoutes);
 
 app.get('/', (req, res)=>{
   res.json({msg : 'The Homepage'})

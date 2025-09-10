@@ -4,8 +4,8 @@ const { Schema } = mongoose;
 const expenseSchema = new Schema({
     user : {
         type : Schema.Types.ObjectId,
-        ref : user,
-        type : true
+        ref : 'User',
+        required : true
     },
     amount : {
         type : Number,
@@ -31,7 +31,7 @@ const expenseSchema = new Schema({
         trim : true,
         maxlength : 200
     },
-        paymentMethod: {
+    paymentMethod: {
       type: String,
       enum: ["Cash", "Card", "Bank Transfer", "Other"],
       default: "Cash",
