@@ -7,12 +7,28 @@ const Expense = require('../models/expense')
 const catchAsync = require('../utils/catchAsync');
 const expressError  = require('../utils/expressError');
 
-router.post('/', catchAsync(async(req, res)=>{
+router.post('/', isLoggedIn, catchAsync(async(req, res)=>{
     const expense = new Expense({
         ...req.body,
         user : req.user._id
     });
+    await expense.save();
     res.status(200).json({msg : 'Expense Created Successfully', expense})
+}));
+
+router.get('/', catchAsync(async(req, res)=>{
+    const expenses  = await Expense.find({user : req.user._id});
+    if(!expenses) return res.status(500).json({msg : 'Expenses cannot be fetched'})
+    
+    res.status(200).json({msg : 'All Expenses', expenses})    
+}));
+
+router.get('/:id', catchAsync(async(req, res)=>{
+    const expense  = await Expense.findById({_id : req.params.id, user : req.user._id});
+
+    if(!expense) return res.status(404).json({msg : 'Expense Not Found'});
+
+    res.status(200).json(expense)
 }));
 
 module.exports = router;
