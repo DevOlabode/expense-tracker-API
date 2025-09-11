@@ -24,7 +24,7 @@ router.get('/', isLoggedIn, catchAsync(async(req, res)=>{
 }));
 
 router.get('/:id', isLoggedIn, catchAsync(async(req, res)=>{
-    const expense  = await Expense.findById({_id : req.params.id, user : req.user._id});
+    const expense  = await Expense.findOne({_id : req.params.id, user : req.user._id});
 
     if(!expense) return res.status(404).json({msg : 'Expense Not Found'});
 
