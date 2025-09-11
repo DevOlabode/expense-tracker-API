@@ -2,6 +2,10 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const expenseSchema = new Schema({
+    name : {
+      type : String,
+      required : true
+    },
     user : {
         type : Schema.Types.ObjectId,
         ref : 'User',
