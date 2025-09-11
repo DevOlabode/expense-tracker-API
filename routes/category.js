@@ -15,6 +15,6 @@ router.post('/', isLoggedIn, catchAsync(async(req, res)=>{
 
     await category.save();
     res.status(200).json({msg : 'Created New Category Successfully', category});
-}))
+}));
 
 module.exports = router;
