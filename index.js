@@ -7,7 +7,8 @@ const LocalStrategy = require('passport-local');
 
 const authRoutes = require('./routes/auth');
 const expenseRoutes = require('./routes/expense');
-const categoryRoutes = require('./routes/category')
+const categoryRoutes = require('./routes/category');
+const incomeRoutes = require('./routes/income');
 
 const User = require('./models/user');
 
@@ -44,6 +45,7 @@ db.once('open', () =>{
 app.use('/', authRoutes);
 app.use('/expense', expenseRoutes);
 app.use('/category', categoryRoutes);
+app.use('/income', incomeRoutes);
 
 app.get('/', (req, res)=>{
   res.json({msg : 'The Homepage'})
