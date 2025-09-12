@@ -41,12 +41,14 @@ router.put('/:id', isLoggedIn, catchAsync(async(req,res)=>{
         runValidators : true
     });
 
-    if(!category) return res.status(404).json({msg : 'Category Not Found'})
+    if(!category) return res.status(404).json({error : 'Category Not Found'})
 
     res.status(200).json({msg : `Category Info Updated Successfully`, category})
 }));
 
 router.delete('/:id', isLoggedIn, catchAsync(async(req, res)=>{ 
-}))
+    const category = await Category.findByIdAndDelete({ _id : req.params.id, user : req.user.id});
+
+}));
 
 module.exports = router;
