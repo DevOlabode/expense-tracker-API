@@ -18,7 +18,7 @@ router.post('/', isLoggedIn, catchAsync(async(req, res)=>{
 
 router.get('/', isLoggedIn, catchAsync(async(req, res)=>{
     const expenses  = await Expense.find({user : req.user._id});
-    if(!expenses) return res.status(500).json({msg : 'Expenses cannot be fetched'})
+    if(!expenses) return res.status(500).json({msg : 'No Expenses Found'})
     
     res.status(200).json({msg : 'All Expenses', expenses})    
 }));

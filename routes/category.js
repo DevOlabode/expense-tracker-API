@@ -17,4 +17,36 @@ router.post('/', isLoggedIn, catchAsync(async(req, res)=>{
     res.status(200).json({msg : 'Created New Category Successfully', category});
 }));
 
+router.get('/', isLoggedIn, catchAsync(async(req, res)=>{
+    const category = await Category.find({user : req.user._id});
+
+    if(!category) return res.status(404).json({msg : 'No Category Found'})
+
+    res.status(200).json({msg : 'All Categories', category})
+}));
+
+router.get('/:id', isLoggedIn, catchAsync(async(req, res)=>{
+    const category = await Category.findOne({_id : req.params.id, user : req.user._id});
+    res.send(category)
+}));
+
+router.put('/:id', isLoggedIn, catchAsync(async(req,res)=>{
+    const category = await Category.findByIdAndUpdate({
+        _id : req.params.id,
+        user : req.user._id,
+    },
+    req.body,
+    {
+        new : true,
+        runValidators : true
+    });
+
+    if(!category) return res.status(404).json({msg : 'Category Not Found'})
+
+    res.status(200).json({msg : `Category Info Updated Successfully`, category})
+}));
+
+router.delete('/:id', isLoggedIn, catchAsync(async(req, res)=>{ 
+}))
+
 module.exports = router;
