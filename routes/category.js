@@ -27,11 +27,13 @@ router.get('/', isLoggedIn, catchAsync(async(req, res)=>{
 
 router.get('/:id', isLoggedIn, catchAsync(async(req, res)=>{
     const category = await Category.findOne({_id : req.params.id, user : req.user._id});
+
+    if(!category) return res.status(404).json({msg : 'Category Not Found'})
     res.send(category)
 }));
 
 router.put('/:id', isLoggedIn, catchAsync(async(req,res)=>{
-    const category = await Category.findByIdAndUpdate({
+    const category = await Category.findOneAndUpdate({
         _id : req.params.id,
         user : req.user._id,
     },
@@ -47,8 +49,11 @@ router.put('/:id', isLoggedIn, catchAsync(async(req,res)=>{
 }));
 
 router.delete('/:id', isLoggedIn, catchAsync(async(req, res)=>{ 
-    const category = await Category.findByIdAndDelete({ _id : req.params.id, user : req.user.id});
+    const category = await Category.findOneAndDelete({ _id : req.params.id, user : req.user._id});
 
+    if(!category) return res.status(500).json({error : 'Category Not Found'})
+
+    res.status(200).json({msg : `Successfully Deleted the ${category.name} category`})    
 }));
 
 module.exports = router;

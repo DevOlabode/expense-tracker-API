@@ -8,9 +8,10 @@ const categorySchema = new Schema({
         trim : true,
         maxlength : 50
     },
-    user : {
-        type : Schema.Types.ObjectId,
-        ref : 'User'
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
     },
     type : {
         type : String,

@@ -18,7 +18,7 @@ router.post('/', isLoggedIn, catchAsync(async(req, res)=>{
 
 router.get('/', isLoggedIn, catchAsync(async(req, res)=>{
     const expenses  = await Expense.find({user : req.user._id});
-    if(!expenses) return res.status(500).json({error : 'No Expenses Found'})
+    if(!expenses) return res.status(404).json({error : 'No Expenses Found'})
     
     res.status(200).json({msg : 'All Expenses', expenses})    
 }));
@@ -32,7 +32,7 @@ router.get('/:id', isLoggedIn, catchAsync(async(req, res)=>{
 }));
 
 router.put('/:id', isLoggedIn, catchAsync(async(req, res)=>{
-    const expense = await Expense.findByIdAndUpdate({
+    const expense = await Expense.findOneAndUpdate({
         _id : req.params.id,
         user : req.user._id,
     },
@@ -50,7 +50,7 @@ router.put('/:id', isLoggedIn, catchAsync(async(req, res)=>{
 
 
 router.delete('/:id', isLoggedIn, catchAsync(async(req, res)=>{
-    const expense = await Expense.findByIdAndDelete({_id : req.params.id, user : req.user._id});
+    const expense = await Expense.findOneAndDelete({_id : req.params.id, user : req.user._id});
     if(!expense) return res.status(404).json({error : 'Expense Not Found'});
 
     res.status(200).json({msg : `The ${expense.name} was successfully deleted`})

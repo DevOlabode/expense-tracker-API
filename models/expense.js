@@ -16,20 +16,11 @@ const expenseSchema = new Schema({
         required : true,
         min : [0, 'Amount must be positive']
     },
-    category : {
-        type : String,
-        required : true,
-        enum : [
-        "Food",
-        "Transport",
-        "Entertainment",
-        "Bills",
-        "Shopping",
-        "Healthcare",
-        "Education",
-        "Other",
-        ]
-    },
+  category: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Category',
+    required: false // allows uncategorized expenses
+  },
     description : {
         type : String,
         trim : true,
