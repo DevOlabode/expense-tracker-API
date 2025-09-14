@@ -1,12 +1,12 @@
 const express = require('express');
 const router = express.Router();
 
-const { isLoggedIn } = require('../middleware');
+const { isLoggedIn, validateBudget } = require('../middleware');
 const Budget = require('../models/budget');
 const catchAsync = require('../utils/catchAsync');
 const expressError  = require('../utils/expressError');
 
-router.post('/', isLoggedIn, catchAsync(async(req, res)=>{
+router.post('/', isLoggedIn, validateBudget, catchAsync(async(req, res)=>{
     const budget = new Budget({
         ... req.body,
         user : req.user._id
@@ -31,7 +31,7 @@ router.get('/:id', isLoggedIn, catchAsync(async(req, res)=>{
     res.status(200).json(budget);
 }));
 
-router.put('/:id', isLoggedIn, catchAsync(async(req, res)=>{
+router.put('/:id', isLoggedIn, validateBudget, catchAsync(async(req, res)=>{
     const budget = await Budget.findOneAndUpdate({
         _id : req.params.id,
         user : req.user._id,

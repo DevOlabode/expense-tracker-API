@@ -1,13 +1,13 @@
 const express = require('express');
 const router = express.Router();
 
-const { isLoggedIn } = require('../middleware');
+const { isLoggedIn, validateCategory } = require('../middleware');
 const Category = require('../models/category')
 
 const catchAsync = require('../utils/catchAsync');
 const expressError  = require('../utils/expressError');
 
-router.post('/', isLoggedIn, catchAsync(async(req, res)=>{
+router.post('/', isLoggedIn, validateCategory, catchAsync(async(req, res)=>{
     const category = new Category({
         ...req.body,
         user : req.user._id
@@ -36,7 +36,7 @@ router.get('/:id', isLoggedIn, catchAsync(async(req, res)=>{
     res.send(category)
 }));
 
-router.put('/:id', isLoggedIn, catchAsync(async(req,res)=>{
+router.put('/:id', isLoggedIn, validateCategory, catchAsync(async(req,res)=>{
     const category = await Category.findOneAndUpdate({
         _id : req.params.id,
         user : req.user._id,

@@ -1,12 +1,12 @@
 const express = require('express');
 const router = express.Router();
 
-const { isLoggedIn } = require('../middleware');
+const { isLoggedIn, validateIncome } = require('../middleware');
 const Income = require('../models/income');
 const catchAsync = require('../utils/catchAsync');
 const expressError  = require('../utils/expressError');
 
-router.post('/', isLoggedIn, catchAsync(async(req, res)=>{
+router.post('/', isLoggedIn, validateIncome, catchAsync(async(req, res)=>{
     const income = new Income({
         ... req.body,
         user : req.user._id
@@ -31,7 +31,7 @@ router.get('/:id', isLoggedIn, catchAsync(async(req, res)=>{
     res.status(200).json(income);
 }));
 
-router.put('/:id', isLoggedIn, catchAsync(async(req, res)=>{
+router.put('/:id', isLoggedIn, validateIncome, catchAsync(async(req, res)=>{
     const income = await Income.findOneAndUpdate({
         _id : req.params.id,
         user : req.user._id,

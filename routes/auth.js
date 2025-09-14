@@ -7,9 +7,9 @@ const User = require('../models/user');
 const ExpressError  = require('../utils/expressError');
 const catchAsync  = require('../utils/catchAsync');
 
-const { isLoggedIn } = require('../middleware');
+const { isLoggedIn, validateUser } = require('../middleware');
 
-router.post('/register', catchAsync(async(req, res)=>{
+router.post('/register', validateUser,  catchAsync(async(req, res)=>{
     const {username, email, password} = req.body;
     const user = await User.register(new User({ username, email }), password);
     await user.save();
@@ -39,7 +39,7 @@ router.post('/login', (req, res, next) => {
     })(req, res, next);
 });
 
-router.post('/logout',isLoggedIn, catchAsync(async(req, res)=>{
+router.post('/logout', isLoggedIn, catchAsync(async(req, res)=>{
     req.logout(function(err){
         if(err) return next(err)
         req.session.destroy(()=>{
