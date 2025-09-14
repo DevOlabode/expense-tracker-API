@@ -24,7 +24,6 @@ Expense Tracker API is a backend service that allows users to manage their perso
 1. Clone the repository:
    ```bash
    git clone <repository-url>
-   cd Expense-Tracker-API
    ```
 
 2. Install dependencies:
