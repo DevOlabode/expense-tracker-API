@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const { isLoggedIn } = require('../middleware');
-const Budget = require('../models/income');
+const Budget = require('../models/budget');
 const catchAsync = require('../utils/catchAsync');
 const expressError  = require('../utils/expressError');
 
@@ -44,7 +44,7 @@ router.put('/:id', isLoggedIn, catchAsync(async(req, res)=>{
 );
     if(!budget) return res.status(404).json({error : 'Budget Not Found'});
 
-    res.status(200).json({msg : 'Income Updated Successfully', budget})
+    res.status(200).json({msg : 'Budget Updated Successfully', budget})
 
 }));
 
@@ -53,8 +53,7 @@ router.delete('/:id', isLoggedIn, catchAsync(async(req, res)=>{
 
     if(!budget) return res.status(404).json({error : 'Budget Not Found'});
 
-    res.status(200).json({msg : `The ${income.source} income was deleted`})
+    res.status(200).json({msg : `The ${budget.name} budget was deleted`})
 }));
-
 
 module.exports = router;

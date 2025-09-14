@@ -4,6 +4,7 @@ const { Schema } = mongoose;
 const budgetschema = new Schema({
     name : {
         type : String, 
+        required : true
     },
     user : {
         type : Schema.Types.ObjectId,
@@ -26,11 +27,11 @@ const budgetschema = new Schema({
     },
     startDate: {
         type: Date,
-        required: true
+        required: true,
+        default : Date.now
     },
     endDate: {
         type: Date,
-        required: true
     }
 },
     {timestamps : true}

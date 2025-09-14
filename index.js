@@ -10,6 +10,7 @@ const expenseRoutes = require('./routes/expense');
 const categoryRoutes = require('./routes/category');
 const incomeRoutes = require('./routes/income');
 const budgetRoutes = require('./routes/budget');
+const reportRoutes = require('./routes/reports')
 
 const User = require('./models/user');
 
@@ -48,6 +49,7 @@ app.use('/expense', expenseRoutes);
 app.use('/category', categoryRoutes);
 app.use('/income', incomeRoutes);
 app.use('/budget', budgetRoutes);
+app.use('/reports', reportRoutes);
 
 app.get('/', (req, res)=>{
   res.json({msg : 'The Homepage'})
