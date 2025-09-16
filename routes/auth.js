@@ -2,10 +2,16 @@ const express  = require('express');
 const router = express.Router();
 const passport = require('passport');
 
+const nodemailer = require('nodemailer');
+
+const crypto = require('crypto');
+
 const User = require('../models/user');
 
 const ExpressError  = require('../utils/expressError');
 const catchAsync  = require('../utils/catchAsync');
+
+const { sendPasswordResetCode } = require('../utils/emailService');
 
 const { isLoggedIn, validateUser } = require('../middleware');
 
@@ -59,5 +65,23 @@ router.delete('/delete', isLoggedIn, catchAsync(async(req, res)=>{
     if(!user) throw new ExpressError('User not found', 404);
     res.status(200).json({msg : 'Account Deleted Successfully'})
 }));
+
+//Forgotten Password or reset password.
+
+function hashPassword(password) {
+  const salt = crypto.randomBytes(32).toString('hex');
+
+  const hash = crypto.createHash('sha512')
+    .update(salt + password)
+    .digest('hex');
+
+  return { salt, hash };
+};
+
+router.post('/forgot-password', catchAsync(async(req, res)=>{
+    const user = await User.findOne({email : req.body.email });
+    if(!user) return res.status(404).json({error : 'No Account Found With This Emial'});
+}));
+
 
 module.exports = router;

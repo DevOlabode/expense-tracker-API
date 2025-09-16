@@ -1,7 +1,7 @@
 # Expense Tracker API
 
 ## Description
-Expense Tracker API is a backend service that allows users to manage their personal finances by tracking expenses, income, budgets, and generating financial reports. It features user authentication and authorization, enabling secure access to personal financial data.
+Expense Tracker API is a backend service for managing personal finances, including tracking expenses, income, budgets, and generating reports. It includes user authentication to ensure secure access to financial data.
 
 ## Features
 - User registration, login, logout, and profile management
@@ -23,7 +23,7 @@ Expense Tracker API is a backend service that allows users to manage their perso
 
 1. Clone the repository:
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/DevOlabode/expense-tracker-API
    ```
 
 2. Install dependencies:
@@ -97,4 +97,4 @@ The API server will start on the port specified in the `.env` file (default is 3
 This project is licensed under the ISC License.
 
 ## Author
-[Your Name]
+Samuel Olabode

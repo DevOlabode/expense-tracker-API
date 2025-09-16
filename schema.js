@@ -4,7 +4,8 @@ const Joi = require('joi');
 const userSchema = Joi.object({
     username: Joi.string().min(3).max(30).required(),
     email: Joi.string().email().required(),
-    password: Joi.string().min(6).required()
+    password: Joi.string().min(8).max(32).pattern(new RegExp('(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])'))
+  .required()
 });
 
 // Expense schema

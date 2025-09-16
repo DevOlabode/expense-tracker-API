@@ -1,34 +1,56 @@
 const dotenv = require('dotenv');
+dotenv.config();
+
 const express  = require('express');
 const mongoose = require('mongoose');
+
 const session = require('express-session');
+
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
+
+const helmet = require('helmet');
+
+const rareLimit = require('express-rate-limit');
+
+const cors = require('cors');
 
 const authRoutes = require('./routes/auth');
 const expenseRoutes = require('./routes/expense');
 const categoryRoutes = require('./routes/category');
 const incomeRoutes = require('./routes/income');
 const budgetRoutes = require('./routes/budget');
-const reportRoutes = require('./routes/reports')
+const reportRoutes = require('./routes/reports');
+
+const loginLimiter = rareLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 5,
+  message: { error: "Too many login attempts, try again later." }
+});
 
 const User = require('./models/user');
-
-dotenv.config();
 
 const app = express()
 const PORT = process.env.PORT || 3000;
 
 const sessionConfig = {
-    secret : process.env.SECRET,
-    resave: false,
-    saveUninitialized: false,
+  secret: process.env.SECRET,
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    httpOnly: true,
+    secure: true,    
+    sameSite: 'strict', 
+    maxAge: 1000 * 60 * 60 * 24 
+  }
 }
 
 app.use(express.json());
 app.use(session(sessionConfig));
 app.use(passport.initialize());
 app.use(passport.session());
+
+app.use(helmet());
 
 passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
@@ -44,6 +66,11 @@ db.once('open', () =>{
     console.log('Database connected');
 });
 
+app.use(cors({
+  origin: ["https://your-frontend.com"],
+  credentials: true
+}));
+
 app.use('/', authRoutes);
 app.use('/expense', expenseRoutes);
 app.use('/category', categoryRoutes);
@@ -51,8 +78,10 @@ app.use('/income', incomeRoutes);
 app.use('/budget', budgetRoutes);
 app.use('/reports', reportRoutes);
 
+app.use('/login', loginLimiter);
+
 app.get('/', (req, res)=>{
-  res.json({msg : 'The Homepage'})
+  res.status(200).json({msg : 'The Homepage'})
 });
 
 app.use((err, req, res, next) => {
@@ -60,4 +89,4 @@ app.use((err, req, res, next) => {
   res.status(statusCode).json({ error: message });
 });
 
-app.listen(PORT, ()=> console.log(`App is listening on PORT ${PORT}`))
+app.listen(PORT, ()=> console.log(`App is listening on PORT ${PORT}`));
