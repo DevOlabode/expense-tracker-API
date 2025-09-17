@@ -2,16 +2,13 @@ const express  = require('express');
 const router = express.Router();
 const passport = require('passport');
 
-const nodemailer = require('nodemailer');
-
-const crypto = require('crypto');
-
 const User = require('../models/user');
 
 const ExpressError  = require('../utils/expressError');
 const catchAsync  = require('../utils/catchAsync');
 
-const { sendPasswordResetCode } = require('../utils/emailService');
+const authController = require('../controllers/authController')
+
 
 const { isLoggedIn, validateUser } = require('../middleware');
 
@@ -29,11 +26,11 @@ router.post('/login', (req, res, next) => {
         return next(err);
     }
     if (!user) {
-        return res.status(401).json({ msg: info.message || 'Login failed' });
+        return res.status(400).json({ msg: info.message || 'Login failed' });
     }
 
     if(req.user){
-        return res.status(401).json({msg : "Already Logged In"})
+        return res.status(400).json( {msg : "Already Logged In"} );
     }
 
     req.logIn(user, (err) => {
@@ -68,20 +65,12 @@ router.delete('/delete', isLoggedIn, catchAsync(async(req, res)=>{
 
 //Forgotten Password or reset password.
 
-function hashPassword(password) {
-  const salt = crypto.randomBytes(32).toString('hex');
+router.post('/forgot-password', catchAsync(authController.requestPasswordReset));
 
-  const hash = crypto.createHash('sha512')
-    .update(salt + password)
-    .digest('hex');
+router.post('/verify-reset-code', catchAsync(authController.verifyResetCode));
 
-  return { salt, hash };
-};
+router.post('/new-password', catchAsync(authController.verifyNewPassword));
 
-router.post('/forgot-password', catchAsync(async(req, res)=>{
-    const user = await User.findOne({email : req.body.email });
-    if(!user) return res.status(404).json({error : 'No Account Found With This Emial'});
-}));
-
+router.post('/reset-password', isLoggedIn, catchAsync(authController.resetPassword));
 
 module.exports = router;

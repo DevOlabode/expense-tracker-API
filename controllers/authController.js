@@ -1,4 +1,4 @@
-const User = require('../models/user')
+const User = require('../models/user');
 
 const { sendPasswordResetCode } = require('../utils/emailService');
 
@@ -16,7 +16,7 @@ module.exports.requestPasswordReset = async (req, res) => {
       });
     }
 
-    const user = await User.findOne({ email: email.toLowerCase() });
+    const user = await User.findOne({ email });
     if (!user) {
       return res.status(404).json({
         success: false,
@@ -63,7 +63,7 @@ module.exports.verifyResetCode = async (req, res) => {
     }
 
     const user = await User.findOne({
-      email: email.toLowerCase(),
+      email,
       resetPasswordToken: resetCode,
       resetPassswordExpires: { $gt: Date.now() }
     });
@@ -87,7 +87,7 @@ module.exports.verifyNewPassword = async(req, res)=>{
 
     if(!newPassword) return res.status(400).json({error : 'New Password is required'});
 
-    const user = await User.findOne(email.trim());
+    const user = await User.findOne({email});
 
     if(!user) return res.status(400).json({error : 'No User With That Email'});
 
@@ -99,4 +99,26 @@ module.exports.verifyNewPassword = async(req, res)=>{
     await user.save();
 
     res.status(200).json({msg : 'Password Reset Successfully. You can now login with your new password '})
+};
+
+module.exports.resetPassword = async (req, res) => {
+  const { currentPassword, newPassword, confirmPassword } = req.body;
+  const user = await User.findById(req.user._id);
+
+  if (!user) return res.status(404).json({ error: "User not found" });
+
+  if (newPassword !== confirmPassword) {
+    return res.status(400).json({ error: "New Password and confirm password should be the same" });
+  }
+
+  if (currentPassword === newPassword) {
+    return res.status(400).json({ error: "Current password should not equal new password" });
+  }
+
+  user.changePassword(currentPassword, newPassword, (err) => {
+    if (err) {
+      return res.status(400).json({ message: "Old password is incorrect." });
+    }
+    res.json({ message: "Password updated successfully." });
+  });
 };

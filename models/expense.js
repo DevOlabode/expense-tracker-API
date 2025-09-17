@@ -16,10 +16,10 @@ const expenseSchema = new Schema({
         required : true,
         min : [0, 'Amount must be positive']
     },
-  category: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Category',
-    required: false // allows uncategorized expenses
+    category: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Category',
+      required: false 
   },
     description : {
         type : String,
@@ -37,7 +37,7 @@ const expenseSchema = new Schema({
     },
     recurring: {
       type: Boolean,
-      default: false, // for subscriptions (Netflix, Rent, etc.)
+      default: false, 
     },
 },
     {timestamps :true}

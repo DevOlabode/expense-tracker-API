@@ -17,6 +17,10 @@ const categorySchema = new Schema({
         type : String,
         enum : ['Expense', 'Income'],
         default : 'Expense'
+    },
+    description : {
+        type : String,
+        required : false
     }
 },
 { timestamps : true}

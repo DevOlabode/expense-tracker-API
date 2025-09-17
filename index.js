@@ -6,8 +6,11 @@ const mongoose = require('mongoose');
 
 const session = require('express-session');
 
+const morgan = require('morgan');
+
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
+const passportLocalMongoose = require('passport-local-mongoose');
 
 const helmet = require('helmet');
 
@@ -39,9 +42,9 @@ const sessionConfig = {
   saveUninitialized: false,
   cookie: {
     httpOnly: true,
-    secure: true,    
-    sameSite: 'strict', 
-    maxAge: 1000 * 60 * 60 * 24 
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'strict',
+    maxAge: 1000 * 60 * 60 * 24
   }
 }
 
@@ -51,6 +54,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(helmet());
+
+app.use(morgan('dev'));
 
 passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
@@ -67,7 +72,7 @@ db.once('open', () =>{
 });
 
 app.use(cors({
-  origin: ["https://your-frontend.com"],
+  origin: process.env.NODE_ENV === 'production' ? ["https://your-frontend.com"] : ["http://localhost:3000", "http://localhost:5173"],
   credentials: true
 }));
 
