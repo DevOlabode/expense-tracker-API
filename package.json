@@ -9,7 +9,14 @@
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage"
   },
-  "keywords": ["expense", "tracker", "api", "finance", "budget", "mongodb"],
+  "keywords": [
+    "expense",
+    "tracker",
+    "api",
+    "finance",
+    "budget",
+    "mongodb"
+  ],
   "author": "Samuel Olabode",
   "license": "ISC",
   "description": "A comprehensive REST API for personal expense tracking with user authentication, budget management, and financial reporting capabilities",
@@ -29,7 +36,9 @@
     "nodemon": "^3.1.10",
     "passport": "^0.7.0",
     "passport-local": "^1.0.0",
-    "passport-local-mongoose": "^8.0.0"
+    "passport-local-mongoose": "^8.0.0",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
     "jest": "^29.7.0",

@@ -1,3 +1,32 @@
+/**
+ * @swagger
+ * /login:
+ *   post:
+ *     summary: Login a user
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *               - password
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 example: user@example.com
+ *               password:
+ *                 type: string
+ *                 example: password123
+ *     responses:
+ *       200:
+ *         description: Login successful
+ *       400:
+ *         description: Invalid credentials
+ */
+
 const express  = require('express');
 const router = express.Router();
 

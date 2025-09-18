@@ -25,6 +25,8 @@ const incomeRoutes = require('./routes/income');
 const budgetRoutes = require('./routes/budget');
 const reportRoutes = require('./routes/reports');
 
+
+
 const loginLimiter = rareLimit({
   windowMs: 15 * 60 * 1000,
   max: 5,
@@ -46,7 +48,33 @@ const sessionConfig = {
     sameSite: 'strict',
     maxAge: 1000 * 60 * 60 * 24
   }
-}
+};
+
+const swaggerUi = require('swagger-ui-express');
+const swaggerJsdoc = require('swagger-jsdoc');
+
+// Swagger config
+const options = {
+  definition: {
+    openapi: "3.0.0",
+    info: {
+      title: "Expense Tracker API",
+      version: "1.0.0",
+      description: "API documentation for Expense Tracker project",
+    },
+    servers: [
+      {
+        url: "http://localhost:3000", 
+      },
+    ],
+  },
+  apis: ["./routes/*.js"],
+};
+
+const specs = swaggerJsdoc(options);
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
+
+
 
 app.use(express.json());
 app.use(session(sessionConfig));
