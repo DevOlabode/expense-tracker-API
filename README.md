@@ -73,6 +73,10 @@ Expense Tracker API is a robust backend service built with Node.js and Express.j
 - **dotenv** - Environment variable management
 - **express-session** - Session management
 
+### API Documentation
+- **swagger-jsdoc** - API documentation generation
+- **swagger-ui-express** - API documentation UI
+
 ### Development Tools
 - **Nodemon** - Development auto-restart
 - **PM2** - Production process manager
@@ -127,6 +131,22 @@ The API will be available at `http://localhost:3000`
 ### Base URL
 ```
 http://localhost:3000
+```
+
+### Interactive API Docs
+The API includes interactive documentation powered by Swagger UI. Access it at:
+```
+http://localhost:3000/api-docs
+```
+
+### GET /
+Get homepage message.
+
+**Response (200):**
+```json
+{
+  "msg": "The Homepage"
+}
 ```
 
 ### Response Format
@@ -184,6 +204,8 @@ Authenticate user and establish session.
   "password": "SecurePass123!"
 }
 ```
+
+**Note:** Login uses username, not email.
 
 **Response (200):**
 ```json
@@ -258,6 +280,25 @@ Set new password after code verification.
 }
 ```
 
+### POST /reset-password
+Reset password while logged in (requires current password).
+
+**Request Body:**
+```json
+{
+  "currentPassword": "SecurePass123!",
+  "newPassword": "NewSecurePass456!",
+  "confirmPassword": "NewSecurePass456!"
+}
+```
+
+**Response (200):**
+```json
+{
+  "message": "Password updated successfully."
+}
+```
+
 ## Expense Management
 
 ### POST /expense
@@ -275,6 +316,8 @@ Create a new expense entry.
   "date": "2023-09-15"
 }
 ```
+
+**Note:** Category is optional.
 
 **Response (200):**
 ```json
@@ -847,6 +890,9 @@ This project is licensed under the ISC License - see the [LICENSE](LICENSE) file
 **Samuel Olabode**
 - GitHub: [@DevOlabode](https://github.com/DevOlabode)
 - Email: samuelolabode@example.com
+
+### CORS Configuration
+The API is configured with CORS to allow requests from frontend applications. In development, it allows `http://localhost:3000` and `http://localhost:5173`. Update the CORS origins in `index.js` for production deployments.
 
 ## Support
 
