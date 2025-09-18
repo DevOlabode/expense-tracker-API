@@ -276,46 +276,45 @@ Create a new expense entry.
 }
 ```
 
-**Response (201):**
+**Response (200):**
 ```json
 {
-  "_id": "60f1b2b3c4d5e6f7g8h9i0j2",
-  "name": "Grocery Shopping",
-  "amount": 85.5,
-  "category": "60f1b2b3c4d5e6f7g8h9i0j1",
-  "description": "Weekly groceries at Whole Foods",
-  "paymentMethod": "Card",
-  "recurring": false,
-  "date": "2023-09-15T00:00:00.000Z",
-  "user": "60f1b2b3c4d5e6f7g8h9i0j1",
-  "createdAt": "2023-09-15T10:30:00.000Z"
+  "msg": "Expense Created Successfully",
+  "expense": {
+    "_id": "60f1b2b3c4d5e6f7g8h9i0j2",
+    "name": "Grocery Shopping",
+    "amount": 85.5,
+    "category": "60f1b2b3c4d5e6f7g8h9i0j1",
+    "description": "Weekly groceries at Whole Foods",
+    "paymentMethod": "Card",
+    "recurring": false,
+    "date": "2023-09-15T00:00:00.000Z",
+    "user": "60f1b2b3c4d5e6f7g8h9i0j1",
+    "createdAt": "2023-09-15T10:30:00.000Z"
+  }
 }
 ```
 
 ### GET /expense
 Retrieve all expenses for the authenticated user.
 
-**Query Parameters:**
-- `page` (optional): Page number for pagination
-- `limit` (optional): Number of items per page
-- `category` (optional): Filter by category ID
-- `startDate` (optional): Filter from date (YYYY-MM-DD)
-- `endDate` (optional): Filter to date (YYYY-MM-DD)
-
 **Response (200):**
 ```json
-[
-  {
-    "_id": "60f1b2b3c4d5e6f7g8h9i0j2",
-    "name": "Grocery Shopping",
-    "amount": 85.5,
-    "category": {
-      "_id": "60f1b2b3c4d5e6f7g8h9i0j1",
-      "name": "Food & Dining"
-    },
-    "date": "2023-09-15T00:00:00.000Z"
-  }
-]
+{
+  "msg": "All Expenses",
+  "expenses": [
+    {
+      "_id": "60f1b2b3c4d5e6f7g8h9i0j2",
+      "name": "Grocery Shopping",
+      "amount": 85.5,
+      "category": {
+        "_id": "60f1b2b3c4d5e6f7g8h9i0j1",
+        "name": "Food & Dining"
+      },
+      "date": "2023-09-15T00:00:00.000Z"
+    }
+  ]
+}
 ```
 
 ### GET /expense/:id
