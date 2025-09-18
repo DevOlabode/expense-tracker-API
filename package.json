@@ -1,14 +1,16 @@
 {
-  "name": "auth_service_api",
+  "name": "expense-tracker-api",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": ["expense", "tracker", "api", "finance", "budget", "mongodb"],
+  "author": "Samuel Olabode",
   "license": "ISC",
-  "description": "",
+  "description": "A comprehensive REST API for personal expense tracking with user authentication, budget management, and financial reporting capabilities",
   "dependencies": {
     "cors": "^2.8.5",
     "crypto": "^1.0.1",
