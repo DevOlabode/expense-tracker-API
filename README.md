@@ -613,52 +613,53 @@ The API uses session-based authentication with Passport.js:
 ## Testing
 
 ### Current Status
-No automated tests are currently implemented. The project is ready for testing framework integration.
+Automated tests are implemented using Jest and Supertest for integration testing, with MongoDB Memory Server for database mocking.
 
-### Recommended Testing Setup
+### Running Tests
 
-1. **Install Testing Dependencies**
+1. **Run all tests**
    ```bash
-   npm install --save-dev jest supertest mongodb-memory-server
+   npm test
    ```
 
-2. **Update package.json scripts**
-   ```json
-   {
-     "scripts": {
-       "test": "jest",
-       "test:watch": "jest --watch",
-       "test:coverage": "jest --coverage"
-     }
-   }
+2. **Run tests in watch mode**
+   ```bash
+   npm run test:watch
    ```
 
-3. **Create Test Structure**
-   ```
-   tests/
-   ├── unit/
-   ├── integration/
-   └── fixtures/
+3. **Run tests with coverage**
+   ```bash
+   npm run test:coverage
    ```
 
-4. **Example Test File**
-   ```javascript
-   const request = require('supertest');
-   const app = require('../index');
+### Test Structure
+```
+tests/
+├── setup.js          # Test configuration and database setup
+├── integration/      # Integration tests for API endpoints
+│   └── app.test.js   # Main integration test file
+├── unit/             # Unit tests (to be added)
+└── fixtures/         # Test data fixtures (to be added)
+```
 
-   describe('Authentication', () => {
-     test('should register a new user', async () => {
-       const response = await request(app)
-         .post('/register')
-         .send({
-           username: 'testuser',
-           email: 'test@example.com',
-           password: 'TestPass123!'
-         });
-       expect(response.status).toBe(201);
-     });
-   });
-   ```
+### Example Test File
+```javascript
+const request = require('supertest');
+const app = require('../index');
+
+describe('Authentication', () => {
+  test('should register a new user', async () => {
+    const response = await request(app)
+      .post('/register')
+      .send({
+        username: 'testuser',
+        email: 'test@example.com',
+        password: 'TestPass123!'
+      });
+    expect(response.status).toBe(201);
+  });
+});
+```
 
 ### Testing Strategy
 - **Unit Tests**: Test individual functions and utilities

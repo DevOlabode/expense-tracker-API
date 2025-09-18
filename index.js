@@ -63,13 +63,15 @@ passport.deserializeUser(User.deserializeUser());
 
 const dbUrl = process.env.DB_URL || 'mongodb://localhost:27017/expenseTracker';
 
-mongoose.connect(dbUrl);
+if (process.env.NODE_ENV !== 'test') {
+  mongoose.connect(dbUrl);
 
-const db = mongoose.connection;
-db.on('error', console.error.bind(console, "Connection error"));
-db.once('open', () =>{
+  const db = mongoose.connection;
+  db.on('error', console.error.bind(console, "Connection error"));
+  db.once('open', () => {
     console.log('Database connected');
-});
+  });
+}
 
 app.use(cors({
   origin: process.env.NODE_ENV === 'production' ? ["https://your-frontend.com"] : ["http://localhost:3000", "http://localhost:5173"],
@@ -94,4 +96,8 @@ app.use((err, req, res, next) => {
   res.status(statusCode).json({ error: message });
 });
 
-app.listen(PORT, ()=> console.log(`App is listening on PORT ${PORT}`));
+if (require.main === module) {
+  app.listen(PORT, () => console.log(`App is listening on PORT ${PORT}`));
+}
+
+module.exports = app;
