@@ -1,3 +1,56 @@
+/**
+ * @swagger
+ * tags:
+ *   name: Reports
+ *   description: Generate reports
+ */
+
+/**
+ * @swagger
+ * /reports/weekly:
+ *   get:
+ *     summary: Generate a weekly report
+ *     tags: [Reports]
+ *     security:
+ *       - cookieAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: start
+ *         schema:
+ *           type: string
+ *           example: 2025-09-01
+ *       - in: query
+ *         name: end
+ *         schema:
+ *           type: string
+ *           example: 2025-09-07
+ *     responses:
+ *       200:
+ *         description: Weekly report generated
+ *
+ * /reports/monthly:
+ *   get:
+ *     summary: Generate a monthly report
+ *     tags: [Reports]
+ *     security:
+ *       - cookieAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: month
+ *         schema:
+ *           type: integer
+ *           example: 9
+ *       - in: query
+ *         name: year
+ *         schema:
+ *           type: integer
+ *           example: 2025
+ *     responses:
+ *       200:
+ *         description: Monthly report generated
+ */
+
+
 const express = require('express');
 const router = express.Router();
 

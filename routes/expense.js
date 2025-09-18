@@ -1,3 +1,125 @@
+/**
+ * @swagger
+ * tags:
+ *   name: Expense
+ *   description: Expense management
+ */
+
+/**
+ * @swagger
+ * /expense:
+ *   post:
+ *     summary: Add a new expense
+ *     tags: [Expense]
+ *     security:
+ *       - cookieAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - name
+ *               - amount
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 example: "Netflix Subscription"
+ *               amount:
+ *                 type: number
+ *                 example: 15.99
+ *               category:
+ *                 type: string
+ *                 example: "Entertainment"
+ *               date:
+ *                 type: string
+ *                 format: date
+ *                 example: "2025-09-17"
+ *               notes:
+ *                 type: string
+ *                 example: "Monthly plan"
+ *     responses:
+ *       201:
+ *         description: Expense created
+ *   get:
+ *     summary: Get all expenses
+ *     tags: [Expense]
+ *     security:
+ *       - cookieAuth: []
+ *     responses:
+ *       200:
+ *         description: List of expenses
+ *
+ * /expense/{id}:
+ *   get:
+ *     summary: Get one expense by id
+ *     tags: [Expense]
+ *     security:
+ *       - cookieAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Expense object
+ *   put:
+ *     summary: Update an expense
+ *     tags: [Expense]
+ *     security:
+ *       - cookieAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 example: "Netflix Subscription"
+ *               amount:
+ *                 type: number
+ *                 example: 12.99
+ *               category:
+ *                 type: string
+ *                 example: "Entertainment"
+ *               date:
+ *                 type: string
+ *                 format: date
+ *                 example: "2025-09-17"
+ *               notes:
+ *                 type: string
+ *                 example: "Updated amount"
+ *     responses:
+ *       200:
+ *         description: Expense updated
+ *   delete:
+ *     summary: Delete an expense
+ *     tags: [Expense]
+ *     security:
+ *       - cookieAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Expense deleted
+ */
+
+
 const express  = require('express');
 const router  = express.Router();
 
