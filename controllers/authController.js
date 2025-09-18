@@ -62,18 +62,12 @@ module.exports.requestPasswordReset = async (req, res) => {
     const { email } = req.body;
 
     if (!email) {
-      return res.status(400).json({
-        success: false,
-        message: 'Email is required'
-      });
+      return res.status(400).json({error : 'Email is required'});
     }
 
     const user = await User.findOne({ email });
     if (!user) {
-      return res.status(404).json({
-        success: false,
-        message: 'No account found with this email address'
-      });
+      return res.status(404).json({error : 'No account found with this email address'});
     }
 
     const resetCode = generateResetCode();
@@ -91,15 +85,11 @@ module.exports.requestPasswordReset = async (req, res) => {
       user.resetPassswordExpires = undefined;
       await user.save();
       
-      return res.status(500).json({
-        success: false,
-        message: 'Failed to send reset code. Please try again.'
-      });
+      return res.status(500).json({ error : 'Failed to send reset code. Please try again.'});
     }
 
     res.status(200).json({
-      success: true,
-      message: 'Password reset code sent to your email address',
+      msg : 'Password reset code sent to your email address',
       expiresIn: '15 minutes'
     });
 };
@@ -108,10 +98,7 @@ module.exports.verifyResetCode = async (req, res) => {
     const { email, resetCode } = req.body;
 
     if (!email || !resetCode) {
-      return res.status(400).json({
-        success: false,
-        message: 'Email and reset code are required'
-      });
+      return res.status(400).json({error : 'Email and reset code are required'});
     }
 
     const user = await User.findOne({
@@ -128,8 +115,7 @@ module.exports.verifyResetCode = async (req, res) => {
     }
 
     res.status(200).json({
-      success: true,
-      message: 'Reset code verified successfully. You can now set your new password.',
+      msg: 'Reset code verified successfully. You can now set your new password.',
       userId: user._id
     });
 };
