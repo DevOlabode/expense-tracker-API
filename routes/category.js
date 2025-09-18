@@ -7,57 +7,16 @@ const Category = require('../models/category')
 const catchAsync = require('../utils/catchAsync');
 const expressError  = require('../utils/expressError');
 
-router.post('/', isLoggedIn, validateCategory, catchAsync(async(req, res)=>{
-    const category = new Category({
-        ...req.body,
-        user : req.user._id
-    });
+const categoryController = require('../controllers/category')
 
-    await category.save();
-    res.status(200).json({msg : 'Created New Category Successfully', category});
-}));
+router.post('/', isLoggedIn, validateCategory, catchAsync(categoryController.newCategory));
 
-router.get('/', isLoggedIn, catchAsync(async(req, res)=>{
-    const category = await Category.find({user : req.user._id});
+router.get('/', isLoggedIn, catchAsync(categoryController.allCategories));
 
-    if(!category) return res.status(404).json({error : 'No Category Found'})
+router.get('/:id', isLoggedIn, catchAsync(categoryController.oneCategory));
 
-    if(category.length === 0){
-        return res.status(404).json({msg : 'No Category Found'})
-    }
+router.put('/:id', isLoggedIn, validateCategory, catchAsync(categoryController.editCategory));
 
-    res.status(200).json({msg : 'All Categories', category})
-}));
+router.delete('/:id', isLoggedIn, catchAsync(categoryController.deleteCategory));
 
-router.get('/:id', isLoggedIn, catchAsync(async(req, res)=>{
-    const category = await Category.findOne({_id : req.params.id, user : req.user._id});
-
-    if(!category) return res.status(404).json({msg : 'Category Not Found'})
-    res.send(category)
-}));
-
-router.put('/:id', isLoggedIn, validateCategory, catchAsync(async(req,res)=>{
-    const category = await Category.findOneAndUpdate({
-        _id : req.params.id,
-        user : req.user._id,
-    },
-    req.body,
-    {
-        new : true,
-        runValidators : true
-    });
-
-    if(!category) return res.status(404).json({error : 'Category Not Found'})
-
-    res.status(200).json({msg : `Category Info Updated Successfully`, category})
-}));
-
-router.delete('/:id', isLoggedIn, catchAsync(async(req, res)=>{ 
-    const category = await Category.findOneAndDelete({ _id : req.params.id, user : req.user._id});
-
-    if(!category) return res.status(500).json({error : 'Category Not Found'})
-
-    res.status(200).json({msg : `Successfully Deleted the ${category.name} category`})    
-}));
-
-module.exports = router;
+module.exports = router
