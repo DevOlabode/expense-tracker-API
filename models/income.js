@@ -28,7 +28,7 @@ const incomeSchema = new Schema({
     },
     recurring : {
         type : Boolean,
-        default : false //monthly Salary
+        default : false 
     }, 
     notes : {
         type : String,

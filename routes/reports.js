@@ -65,4 +65,6 @@ router.get('/weekly', isLoggedIn, catchAsync(reportController.weeklyReport));
 // GET /reports/monthly?month=9&year=2025
 router.get('/monthly', isLoggedIn, catchAsync(reportController.monthlyReport));
 
+router.get('/AI-report', isLoggedIn, catchAsync(reportController.AIReport))
+
 module.exports = router;

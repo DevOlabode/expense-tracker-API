@@ -1,6 +1,9 @@
 const Expense = require('../models/expense');
+const User = require('../models/user');
 const Income = require('../models/income');
 const Budget = require('../models/budget');
+const { AIReport } = require('../utils/AIreport');
+const { router } = require('..');
 
 module.exports.weeklyReport = async (req, res) => {
     const { start, end } = req.query;
@@ -113,4 +116,25 @@ module.exports.monthlyReport = async (req, res) => {
         expensesByCategory: totalExpensesAgg,
         budgetComparison
     });
+};
+
+module.exports.AIReport = async(req, res)=>{
+    try {
+        const user = await User.findOne({_id : req.user._id});
+        const expense  = await Expense.find({user: req.user._id});
+        const income = await Income.find({user: req.user._id});
+        const budget = await Budget.find({user: req.user._id});
+
+        const report = await AIReport(user, budget, income, expense);
+
+        if (report instanceof Error) {
+            return res.status(500).json({ error: report.message });
+        }
+
+        console.log(report);
+
+        res.status(200).json({msg : 'AI Report', report});
+    } catch (error) {
+        res.status(500).json({ error: 'Internal server error' });
+    }
 };

@@ -6,6 +6,8 @@ const mongoose = require('mongoose');
 
 const session = require('express-session');
 
+const ExpressError = require('./utils/expressError');
+
 const morgan = require('morgan');
 
 const passport = require('passport');
@@ -117,6 +119,10 @@ app.use('/login', loginLimiter);
 
 app.get('/', (req, res)=>{
   res.status(200).json({msg : 'The Homepage'})
+});
+
+app.all(/(.*)/, (req, res, next) => {
+    next(new ExpressError('Page not found', 404))
 });
 
 app.use((err, req, res, next) => {
