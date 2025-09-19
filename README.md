@@ -4,7 +4,7 @@
 [![Node.js Version](https://img.shields.io/badge/node-%3E%3D14.0.0-brightgreen)](https://nodejs.org/)
 [![MongoDB](https://img.shields.io/badge/MongoDB-4.4%2B-green)](https://www.mongodb.com/)
 
-A comprehensive REST API for personal expense tracking with user authentication, budget management, and financial reporting capabilities.
+A comprehensive REST API for personal expense tracking with user authentication, budget management, financial reporting, and AI-powered financial insights.
 
 ## Table of Contents
 
@@ -33,6 +33,7 @@ Expense Tracker API is a robust backend service built with Node.js and Express.j
 - ✅ Complete user authentication system (register, login, logout, password reset)
 - ✅ Full CRUD operations for expenses, income, categories, and budgets
 - ✅ Advanced financial reporting (weekly/monthly with budget comparisons)
+- ✅ AI-powered financial insights and personalized recommendations
 - ✅ Category-based expense organization
 - ✅ Budget tracking with spending alerts
 - ✅ Recurring transaction support
@@ -110,6 +111,7 @@ Expense Tracker API is a robust backend service built with Node.js and Express.j
    NODE_ENV=development
    EMAIL_USER=your_email@gmail.com
    EMAIL_PASS=your_app_password
+   AI_KEY=your_groq_api_key_here
    ```
 
 4. **Start MongoDB**
@@ -540,6 +542,45 @@ GET /reports/monthly?month=9&year=2023
       "percentageUsed": "75.08"
     }
   ]
+}
+```
+
+### GET /reports/ai
+Generate AI-powered financial insights and personalized recommendations.
+
+**Note:** Requires `AI_KEY` environment variable to be set with a valid Groq API key.
+
+**Response (200):**
+```json
+{
+  "msg": "AI Report",
+  "report": {
+    "summary": "A brief overview of the user's financial health.",
+    "spendingInsights": [
+      {
+        "category": "Food",
+        "status": "Overspending",
+        "comment": "Spending on food exceeds the allocated budget by 25%."
+      }
+    ],
+    "recommendations": [
+      "Consider reducing dining out expenses to stay within budget.",
+      "Set aside a fixed percentage of income for emergency savings."
+    ],
+    "savingsOpportunities": [
+      {
+        "category": "Subscriptions",
+        "suggestion": "Review and cancel unused subscriptions to save monthly costs."
+      }
+    ]
+  }
+}
+```
+
+**Error Response (500):**
+```json
+{
+  "error": "AI service unavailable or API key not configured"
 }
 ```
 
