@@ -94,7 +94,6 @@ Expense Tracker API is a robust backend service built with Node.js and Express.j
 1. **Clone the repository**
    ```bash
    git clone https://github.com/DevOlabode/expense-tracker-API.git
-   cd expense-tracker-API
    ```
 
 2. **Install dependencies**
