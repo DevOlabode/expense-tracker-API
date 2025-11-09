@@ -19,7 +19,7 @@ Your task is to:
 Return your analysis strictly in the following JSON format:
 
 {
-  "summary": "A brief overview of the user's financial health.",
+  "summary": "A brief overview of the user's financial health. You have a great ... or You have a bad ...",
   "spendingInsights": [
     {
       "category": "Food",
