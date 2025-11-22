@@ -91,17 +91,7 @@ passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-const dbUrl = process.env.DB_URL || 'mongodb://localhost:27017/expenseTracker';
-
-if (process.env.NODE_ENV !== 'test') {
-  mongoose.connect(dbUrl);
-
-  const db = mongoose.connection;
-  db.on('error', console.error.bind(console, "Connection error"));
-  db.once('open', () => {
-    console.log('Database connected');
-  });
-}
+require('./config/db')();
 
 app.use(cors({
   origin: process.env.NODE_ENV === 'production' ? ["https://your-frontend.com"] : ["http://localhost:3000", "http://localhost:5173"],
