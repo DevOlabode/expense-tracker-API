@@ -31,6 +31,7 @@ const incomeSchema = Joi.object({
 // Category schema
 const categorySchema = Joi.object({
     name: Joi.string().min(2).max(50).required(),
+    type: Joi.string().valid('Expense', 'Income').default('Expense').required(),
     description: Joi.string().allow('', null)
 });
 
